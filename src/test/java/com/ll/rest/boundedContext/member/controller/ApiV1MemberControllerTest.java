@@ -6,15 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.nio.charset.StandardCharsets;
-import static org.assertj.core.api.Assertions.assertThat;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -25,17 +21,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @Transactional
 @ActiveProfiles("test")
-class MemberControllerTest {
+class ApiV1MemberControllerTest {
     @Autowired
     private MockMvc mvc;
 
     @Test
-    @DisplayName("POST /member/login 은 로그인 처리 URL")
+    @DisplayName("POST api/v1/member/login 은 로그인 처리 URL")
     void t1() throws Exception {
         // When
         ResultActions resultActions = mvc
                 .perform(
-                        post("/member/login")
+                        post("api/v1/member/login")
                                 .content("""
                                         {
                                             "username": "user1",
