@@ -4,6 +4,7 @@ import com.ll.rest.base.rsData.RsData;
 import com.ll.rest.boundedContext.member.entity.Member;
 import com.ll.rest.boundedContext.member.service.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -58,7 +59,7 @@ public class ApiV1MemberController {
     }
 
     @GetMapping(value = "/me", consumes = ALL_VALUE)   // 'consumes=ALL_VALUE' json을 굳이 안받아도 된다는 의미
-    @Operation(summary = "로그인된 사용자의 정보")
+    @Operation(summary = "로그인된 사용자의 정보" , security = @SecurityRequirement(name = "bearerAuth"))
     public RsData<MeResponse> me(@AuthenticationPrincipal User user) {
         Member member = memberService.findByUsername(user.getUsername()).get();
 
