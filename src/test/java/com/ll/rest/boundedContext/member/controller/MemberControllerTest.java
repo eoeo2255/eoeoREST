@@ -23,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @Transactional
 @ActiveProfiles("test")
-class ApiV1MemberControllerTest {
+class MemberControllerTest {
     @Autowired
     private MockMvc mvc;
 
@@ -71,4 +71,6 @@ class ApiV1MemberControllerTest {
                 .andExpect(jsonPath("$.data.member.id").exists())
                 .andExpect(jsonPath("$.data.member.username").value("user1"));
     }
+
+
 }

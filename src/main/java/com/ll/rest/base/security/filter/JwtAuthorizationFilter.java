@@ -13,7 +13,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -32,13 +31,13 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         String bearerToken = request.getHeader("Authorization");
 
         if (bearerToken != null) {
-            String token = bearerToken.substring("Bearer ".length());
+            String token = bearerToken.substring("Bearer ".length());   // key 앞에 Bearer 가 붙어서 오기 때문
 
             if (jwtProvider.verify(token)) {
                 Map<String, Object> claims = jwtProvider.getClaims(token);
-                String username = (String) claims.get("username");
+                long id = (int) claims.get("id");
 
-                Member member = memberService.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(username));
+                Member member = memberService.findById(id).orElseThrow();
 
                 forceAuthentication(member);
             }
@@ -49,6 +48,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
     // 강제로 로그인 처리하는 메소드
     private void forceAuthentication(Member member) {
+        // 이를 통해 '스프링 시큐리티'에 있는 유저 정보를 가져올 수 있다.
         User user = new User(member.getUsername(), member.getPassword(), member.getAuthorities());
 
         // 스프링 시큐리티 객체에 저장할 authentication 객체를 생성
